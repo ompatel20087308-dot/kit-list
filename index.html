@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#E4E7E3">
+<title>Kit list — LSE 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#E4E7E3; --panel:#EFF1EE; --ink:#1B211E; --soft:#5E6A63;
+    --rule:#C3CAC4; --pine:#2F5D50; --clay:#8A3324;
+    --fd:'Archivo','Helvetica Neue',Arial,sans-serif;
+    --fm:'Spline Sans Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--fm); font-size:14px; line-height:1.45;
+    padding:26px 20px 60px; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px;margin:0 auto}
+
+  header{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;
+    border-bottom:2px solid var(--ink);padding-bottom:12px}
+  h1{font-family:var(--fd);font-weight:700;font-size:clamp(26px,5vw,40px);letter-spacing:-.02em;
+    text-transform:uppercase;margin:0;line-height:1}
+  .sub{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);margin-top:7px}
+  .stamp{font-family:var(--fd);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:.16em;
+    border:1.5px solid var(--pine);color:var(--pine);padding:5px 9px;white-space:nowrap}
+
+  .tape{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    border:1px solid var(--rule);border-top:none;background:var(--panel)}
+  .tape>div{padding:12px 14px;border-right:1px solid var(--rule)}
+  .tape>div:last-child{border-right:none}
+  .k{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+  .v{font-family:var(--fd);font-weight:700;font-size:21px;margin-top:3px;letter-spacing:-.01em}
+  .v.pine{color:var(--pine)}
+  .vn{font-size:10.5px;color:var(--soft);margin-top:2px}
+
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:20px 0 14px}
+  button{font:inherit;cursor:pointer}
+  .chip{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;background:transparent;
+    color:var(--soft);border:1px solid var(--rule);padding:6px 11px}
+  .chip:hover{border-color:var(--ink);color:var(--ink)}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+  .solid{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;background:var(--ink);
+    color:var(--ground);border:1px solid var(--ink);padding:6px 13px}
+  .solid:hover{background:var(--pine);border-color:var(--pine)}
+  .right{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+  :focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+
+  .group{margin-bottom:24px}
+  .ghead{display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--ink);
+    padding-bottom:5px;margin-bottom:2px}
+  .gname{font-family:var(--fd);font-weight:600;text-transform:uppercase;font-size:13px;letter-spacing:.1em;
+    padding:2px 4px;border-radius:2px}
+  .gmeta{font-size:11px;color:var(--soft);margin-left:auto}
+
+  .row{display:grid;grid-template-columns:26px minmax(0,2.2fr) minmax(0,1.5fr) 96px 58px;
+    gap:10px;align-items:center;padding:8px 4px;border-bottom:1px solid var(--rule)}
+  .row:hover{background:var(--panel)}
+  .tick{width:17px;height:17px;border:1.5px solid var(--soft);background:transparent;padding:0;
+    display:grid;place-items:center;color:transparent;font-size:11px;font-weight:700;line-height:1}
+  .tick[aria-pressed="true"]{background:var(--pine);border-color:var(--pine);color:var(--ground)}
+  .row.done .cell{color:var(--soft);text-decoration:line-through}
+  [contenteditable]{padding:3px 5px;border-radius:2px;outline:none;min-height:20px;word-break:break-word}
+  [contenteditable]:hover{background:#DCE0DB}
+  [contenteditable]:focus{background:#fff;box-shadow:0 0 0 1px var(--pine)}
+  [contenteditable]:empty:before{content:attr(data-ph);color:var(--soft);opacity:.7}
+  .name{font-size:14px}
+  .src{font-size:12px;color:var(--soft)}
+  .cost{font-family:var(--fd);font-weight:600;font-size:14px;text-align:right}
+  .acts{display:flex;gap:2px;justify-content:flex-end}
+  .mini{font-size:10.5px;background:none;border:none;color:var(--soft);padding:3px 4px;
+    text-transform:uppercase;letter-spacing:.05em}
+  .mini:hover{color:var(--ink);text-decoration:underline}
+  .mini.del:hover{color:var(--clay)}
+  .flag{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+    border:1px solid var(--clay);color:var(--clay);padding:1px 5px;margin-left:6px;vertical-align:1px}
+
+  .status{font-size:11.5px;color:var(--soft);margin-top:22px;border-top:1px solid var(--rule);padding-top:10px}
+  .empty{padding:28px 4px;color:var(--soft)}
+
+  @media(max-width:640px){
+    .row{grid-template-columns:24px minmax(0,1fr) 82px;row-gap:2px}
+    .src{grid-column:2/4}
+    .acts{grid-column:2/4;justify-content:flex-start}
+  }
+  @media print{
+    body{background:#fff;padding:0}
+    .bar,.acts,.tick{display:none}
+    .row{grid-template-columns:minmax(0,2fr) minmax(0,1fr) 90px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Kit list</h1>
+      <div class="sub">LSE &mdash; Michaelmas 2026 &middot; moving-in manifest</div>
+    </div>
+    <div class="stamp" id="stamp">— items</div>
+  </header>
+
+  <div class="tape">
+    <div><div class="k">Still to buy</div><div class="v" id="c1">£0</div><div class="vn" id="n1">—</div></div>
+    <div><div class="k">Already bought</div><div class="v pine" id="c2">£0</div><div class="vn" id="n2">—</div></div>
+    <div><div class="k">Full list</div><div class="v" id="c3">£0</div><div class="vn" id="n3">—</div></div>
+    <div><div class="k">No price yet</div><div class="v" id="c4">0</div><div class="vn">need costing</div></div>
+  </div>
+
+  <div class="bar">
+    <button class="chip" data-f="all" aria-pressed="true">All</button>
+    <button class="chip" data-f="todo" aria-pressed="false">To buy</button>
+    <button class="chip" data-f="done" aria-pressed="false">Bought</button>
+    <button class="chip" data-f="essential" aria-pressed="false">Essentials</button>
+    <div class="right">
+      <button class="chip" id="export">Export</button>
+      <button class="chip" id="importBtn">Import</button>
+      <button class="chip" id="section">New section</button>
+      <button class="solid" id="add">Add item</button>
+    </div>
+  </div>
+
+  <div id="list"></div>
+  <div class="status" id="status">Loading…</div>
+  <input type="file" id="file" accept="application/json" hidden>
+</div>
+
+<script>
+(function(){
+  var KEY='lse-kit-list-v1', filter='all';
+  var SEED=[
+    ['Drying rack','Bedroom & room kit',null,'',1],
+    ['Mini fridge','Bedroom & room kit',null,'',0],
+    ['Duvet','Bedroom & room kit',null,'',1],
+    ['Pillow','Bedroom & room kit',null,'',1],
+    ['2 × Duvet covers','Bedroom & room kit',null,'',1],
+    ['2 × Pillow covers','Bedroom & room kit',null,'',1],
+    ['2 × Bed sheets','Bedroom & room kit',null,'',1],
+    ['Nike P6000 — blue','Clothing',109.99,'',0],
+    ['Corteiz vests','Clothing',40,'',0],
+    ['Ferrari hat','Clothing',135,'',0],
+    ['Black TT shin guards','Kickboxing',43.99,'',0],
+    ['Black TT head guard','Kickboxing',104.99,'',0],
+    ['Black TT groin guard','Kickboxing',15.99,'',0],
+    ['Yamantaka gloves','Kickboxing',199.99,'',0]
+  ];
+  var items=[], sections=[];
+  var $=function(i){return document.getElementById(i)};
+  function uid(){return 'i'+Date.now().toString(36)+Math.random().toString(36).slice(2,5)}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function gbp(n){return '£'+n.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2})}
+  function rnd(n){return '£'+Math.round(n).toLocaleString('en-GB')}
+
+  function save(){
+    try{
+      localStorage.setItem(KEY,JSON.stringify({v:1,items:items,sections:sections}));
+      say('Saved to this browser. Export now and then to keep a backup.');
+    }catch(e){ say('Could not save — your browser is blocking storage. Use Export before closing.'); }
+  }
+  function say(m){$('status').textContent=m}
+
+  function load(){
+    var raw=null;
+    try{ raw=localStorage.getItem(KEY); }catch(e){}
+    if(raw){
+      try{
+        var d=JSON.parse(raw);
+        if(d&&Array.isArray(d.items)){
+          items=d.items;
+          sections=Array.isArray(d.sections)&&d.sections.length?d.sections:derive();
+          return render();
+        }
+      }catch(e){}
+    }
+    items=SEED.map(function(s){return{id:uid(),name:s[0],cat:s[1],cost:s[2],src:s[3],pri:s[4],done:false}});
+    sections=derive(); render(); save();
+  }
+  function derive(){var o=[];items.forEach(function(i){if(o.indexOf(i.cat)<0)o.push(i.cat)});return o}
+
+  function vis(i){
+    if(filter==='todo')return !i.done;
+    if(filter==='done')return i.done;
+    if(filter==='essential')return i.pri===1;
+    return true;
+  }
+
+  function render(){
+    var h='';
+    sections.forEach(function(cat,ci){
+      var all=items.filter(function(i){return i.cat===cat});
+      var g=all.filter(vis);
+      if(!all.length&&filter!=='all')return;
+      var sum=g.reduce(function(a,b){return a+(b.cost||0)},0);
+      var left=g.filter(function(i){return !i.done}).length;
+      h+='<section class="group"><div class="ghead">'+
+        '<span class="gname" contenteditable data-sec="'+ci+'">'+esc(cat)+'</span>'+
+        '<span class="gmeta">'+g.length+' shown · '+left+' to buy · '+rnd(sum)+'</span></div>';
+      if(!g.length){ h+='<div class="empty">Nothing here yet.</div>'; }
+      g.forEach(function(i){
+        var link=/^https?:\/\//i.test(i.src||'');
+        h+='<div class="row'+(i.done?' done':'')+'" data-id="'+i.id+'">'+
+          '<button class="tick" data-act="tick" aria-pressed="'+i.done+'" aria-label="Mark as bought">✓</button>'+
+          '<div class="cell name"><span contenteditable data-fl="name" data-ph="Item name">'+esc(i.name)+'</span>'+
+            (i.pri===1?'<span class="flag">essential</span>':'')+'</div>'+
+          '<div class="cell src"><span contenteditable data-fl="src" data-ph="where to buy?">'+esc(i.src)+'</span></div>'+
+          '<div class="cell cost"><span contenteditable data-fl="cost" data-ph="no price">'+(i.cost==null?'':i.cost.toFixed(2))+'</span></div>'+
+          '<div class="acts">'+
+            '<button class="mini" data-act="move" title="Move to another section">Move</button>'+
+            '<button class="mini" data-act="pri" title="Toggle essential">★</button>'+
+            '<button class="mini del" data-act="del">Del</button>'+
+          '</div></div>';
+      });
+      h+='</section>';
+    });
+    $('list').innerHTML=h||'<div class="empty">No sections yet. Add one to get started.</div>';
+    totals();
+  }
+
+  function totals(){
+    var out=0,bt=0,un=0,on=0,bn=0;
+    items.forEach(function(i){
+      if(i.cost==null)un++;
+      if(i.done){bt+=i.cost||0;bn++}else{out+=i.cost||0;on++}
+    });
+    $('c1').textContent=rnd(out); $('n1').textContent=on+' outstanding';
+    $('c2').textContent=rnd(bt);  $('n2').textContent=bn+' ticked off';
+    $('c3').textContent=rnd(out+bt); $('n3').textContent=un?'excludes unpriced':'everything costed';
+    $('c4').textContent=un;
+    $('stamp').textContent=items.length+' items';
+  }
+
+  $('list').addEventListener('click',function(e){
+    var b=e.target.closest('[data-act]'); if(!b)return;
+    var row=b.closest('.row'); var i=items.find(function(x){return x.id===row.dataset.id}); if(!i)return;
+    if(b.dataset.act==='tick'){i.done=!i.done;save();render()}
+    if(b.dataset.act==='pri'){i.pri=i.pri===1?0:1;save();render()}
+    if(b.dataset.act==='del'){items=items.filter(function(x){return x.id!==i.id});save();render()}
+    if(b.dataset.act==='move'){
+      var to=prompt('Move "'+i.name+'" to which section?\n\n'+sections.join('\n'),i.cat);
+      if(to&&to.trim()){to=to.trim();if(sections.indexOf(to)<0)sections.push(to);i.cat=to;save();render()}
+    }
+  });
+
+  $('list').addEventListener('focusout',function(e){
+    var el=e.target; if(!el.hasAttribute||!el.hasAttribute('contenteditable'))return;
+    var t=el.textContent.trim();
+    if(el.dataset.sec!==undefined){
+      var ci=+el.dataset.sec, old=sections[ci];
+      if(!t){el.textContent=old;return}
+      sections[ci]=t; items.forEach(function(i){if(i.cat===old)i.cat=t});
+      save(); render(); return;
+    }
+    var row=el.closest('.row'); var i=items.find(function(x){return x.id===row.dataset.id}); if(!i)return;
+    var f=el.dataset.fl;
+    if(f==='name'){ if(!t){el.textContent=i.name;return} i.name=t }
+    if(f==='src'){ i.src=t }
+    if(f==='cost'){
+      var n=parseFloat(t.replace(/[£,\s]/g,''));
+      i.cost=(t===''||isNaN(n)||n<0)?null:n;
+      el.textContent=i.cost==null?'':i.cost.toFixed(2);
+    }
+    save(); totals();
+  });
+
+  $('list').addEventListener('keydown',function(e){
+    if(e.key==='Enter'&&e.target.hasAttribute&&e.target.hasAttribute('contenteditable')){e.preventDefault();e.target.blur()}
+    if(e.key==='Escape'&&e.target.blur)e.target.blur();
+  });
+
+  document.querySelectorAll('.chip[data-f]').forEach(function(b){
+    b.addEventListener('click',function(){
+      filter=b.dataset.f;
+      document.querySelectorAll('.chip[data-f]').forEach(function(o){o.setAttribute('aria-pressed',String(o===b))});
+      render();
+    });
+  });
+
+  $('add').addEventListener('click',function(){
+    if(!sections.length)sections.push('General');
+    items.push({id:uid(),name:'New item',cat:sections[0],cost:null,src:'',pri:0,done:false});
+    save(); render();
+    var all=$('list').querySelectorAll('[data-fl="name"]');
+    if(all.length){var last=all[all.length-1];last.focus();
+      var r=document.createRange();r.selectNodeContents(last);
+      var s=getSelection();s.removeAllRanges();s.addRange(r);
+      last.scrollIntoView({block:'center',behavior:'smooth'});}
+  });
+
+  $('section').addEventListener('click',function(){
+    var n=prompt('Name the new section','Kitchen');
+    if(n&&n.trim()){sections.push(n.trim());save();render()}
+  });
+
+  $('export').addEventListener('click',function(){
+    var blob=new Blob([JSON.stringify({v:1,items:items,sections:sections},null,2)],{type:'application/json'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='kit-list-'+new Date().toISOString().slice(0,10)+'.json';
+    a.click(); URL.revokeObjectURL(a.href);
+    say('Exported. Keep that file safe — it restores the whole list on any device.');
+  });
+
+  $('importBtn').addEventListener('click',function(){$('file').click()});
+  $('file').addEventListener('change',function(e){
+    var f=e.target.files[0]; if(!f)return;
+    var r=new FileReader();
+    r.onload=function(){
+      try{
+        var d=JSON.parse(r.result);
+        if(!d||!Array.isArray(d.items))throw 0;
+        if(!confirm('This replaces your current list with '+d.items.length+' items. Continue?'))return;
+        items=d.items; sections=Array.isArray(d.sections)&&d.sections.length?d.sections:derive();
+        save(); render();
+      }catch(err){ say("That file isn't a kit list export. Nothing was changed."); }
+    };
+    r.readAsText(f); e.target.value='';
+  });
+
+  load();
+})();
+</script>
+</body>
+</html>
