@@ -300,13 +300,22 @@
 
   $('add').addEventListener('click',function(){
     if(!sections.length)sections.push('General');
-    items.push({id:uid(),name:'New item',cat:sections[0],cost:null,src:'',notes:'',pri:0,done:false});
+    var id=uid();
+    var item={id:id,name:'New item',cat:sections[0],cost:null,src:'',notes:'',pri:0,done:false};
+    items.push(item);
+    if(!vis(item)){
+      filter='all';
+      document.querySelectorAll('.chip[data-f]').forEach(function(o){o.setAttribute('aria-pressed',String(o.dataset.f==='all'))});
+    }
     save(); render();
-    var all=$('list').querySelectorAll('[data-fl="name"]');
-    if(all.length){var last=all[all.length-1];last.focus();
-      var r=document.createRange();r.selectNodeContents(last);
+    var row=$('list').querySelector('[data-id="'+id+'"]');
+    var nameEl=row&&row.querySelector('[data-fl="name"]');
+    if(nameEl){
+      nameEl.focus();
+      var r=document.createRange();r.selectNodeContents(nameEl);
       var s=getSelection();s.removeAllRanges();s.addRange(r);
-      last.scrollIntoView({block:'center',behavior:'smooth'});}
+      nameEl.scrollIntoView({block:'center',behavior:'smooth'});
+    }
   });
 
   $('section').addEventListener('click',function(){
