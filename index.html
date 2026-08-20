@@ -63,6 +63,9 @@
     padding-bottom:5px;margin-bottom:2px}
   .gname{font-family:var(--fd);font-weight:600;text-transform:uppercase;font-size:13px;letter-spacing:.1em;
     padding:2px 4px;border-radius:2px}
+  .addhere{font-family:var(--fd);font-weight:600;letter-spacing:.05em;font-size:10.5px;color:var(--pine);
+    border:1px solid var(--pine);background:transparent;padding:2px 7px;text-transform:uppercase}
+  .addhere:hover{background:var(--pine);color:var(--ground)}
   .gmeta{font-size:11px;color:var(--soft);margin-left:auto}
 
   .row{display:grid;grid-template-columns:26px minmax(0,1.7fr) minmax(0,1.1fr) minmax(0,1.1fr) 86px 96px;
@@ -215,6 +218,7 @@
       var left=g.filter(function(i){return !i.done}).length;
       h+='<section class="group"><div class="ghead">'+
         '<span class="gname" contenteditable data-sec="'+ci+'">'+esc(cat)+'</span>'+
+        '<button class="mini addhere" data-act="addhere" data-cat="'+esc(cat)+'" title="Add item to this section">+ Add</button>'+
         '<span class="gmeta">'+g.length+' shown · '+left+' to buy · '+rnd(sum)+'</span></div>';
       if(!g.length){ h+='<div class="empty">Nothing here yet.</div>'; }
       g.forEach(function(i){
@@ -253,7 +257,9 @@
 
   $('list').addEventListener('click',function(e){
     var b=e.target.closest('[data-act]'); if(!b)return;
-    var row=b.closest('.row'); var i=items.find(function(x){return x.id===row.dataset.id}); if(!i)return;
+    if(b.dataset.act==='addhere'){ addItem(b.dataset.cat); return; }
+    var row=b.closest('.row'); if(!row)return;
+    var i=items.find(function(x){return x.id===row.dataset.id}); if(!i)return;
     if(b.dataset.act==='tick'){i.done=!i.done;save();render()}
     if(b.dataset.act==='pri'){i.pri=i.pri===1?0:1;save();render()}
     if(b.dataset.act==='del'){items=items.filter(function(x){return x.id!==i.id});save();render()}
@@ -298,10 +304,11 @@
     });
   });
 
-  $('add').addEventListener('click',function(){
+  function addItem(cat){
     if(!sections.length)sections.push('General');
+    if(!cat||sections.indexOf(cat)<0)cat=sections[0];
     var id=uid();
-    var item={id:id,name:'New item',cat:sections[0],cost:null,src:'',notes:'',pri:0,done:false};
+    var item={id:id,name:'New item',cat:cat,cost:null,src:'',notes:'',pri:0,done:false};
     items.push(item);
     if(!vis(item)){
       filter='all';
@@ -316,6 +323,16 @@
       var s=getSelection();s.removeAllRanges();s.addRange(r);
       nameEl.scrollIntoView({block:'center',behavior:'smooth'});
     }
+  }
+
+  $('add').addEventListener('click',function(){
+    if(!sections.length){ addItem(); return; }
+    if(sections.length===1){ addItem(sections[0]); return; }
+    var to=prompt('Add to which section?\n\n'+sections.join('\n'),sections[0]);
+    if(to===null)return;
+    to=to.trim();
+    if(to&&sections.indexOf(to)<0)sections.push(to);
+    addItem(to||sections[0]);
   });
 
   $('section').addEventListener('click',function(){
